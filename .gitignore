@@ -7,7 +7,10 @@ $*
 .*.rej
 .DS_Store
 ._*
+_ares
+deploy/
 .project
 /ide.log
 /project.json
 test/root
+ares*.tgz
