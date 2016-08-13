@@ -570,11 +570,23 @@ enyo.kind({
 		// through window.onerror handler
 		// another warning: enyo.load is asynchronous. try/catch is useless
 		
-		enyo.load("$enyo/../source/package.js", enyo.bind(this, function() {
-			this.trace("user app initialization done within designer iframe");
-			this.sendMessage({op: "state", val: "initialized"});
-		}));
-
+		if(myVer[0] >= 2 && myVer[1] > 3){
+				try {
+					enyo.aresload("$enyo/../source/package.js", enyo.bind(this, function() {
+						this.trace("user app initialization done within designer iframe");
+						this.sendMessage({op: "state", val: "initialized"});
+					}));
+				}catch (e) {
+					var   errMsg = " enyo.aresload  Not Found in enyo/source/boot/boot.js   You should add it or update to a version that has it!";
+					this.trace(errMsg);
+   					this.sendMessage({op: "error", val: {msg: errMsg} }); 
+				}
+		}else{
+			enyo.load("$enyo/../source/package.js", enyo.bind(this, function() {
+				this.trace("user app initialization done within designer iframe");
+				this.sendMessage({op: "state", val: "initialized"});
+			}));
+		}
 	},
 	addKindAresOptions: function(inComponents, inOptions) {
 		if (!inComponents) {
